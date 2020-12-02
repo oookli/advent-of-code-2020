@@ -12,6 +12,10 @@ const generateResult = async () => {
     let exactLetters = 0;
 
     for (let i = 0; i < password.length; i++) {
+      if (i > max) {
+        break;
+      }
+
       if (password[i] === letter && [min - 1, max - 1].includes(i)) {
         exactLetters++;
       }
