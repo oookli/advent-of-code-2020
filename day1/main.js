@@ -7,7 +7,7 @@ let number3;
 const YEAR = 2020;
 
 const generateResult = async () => {
-  const array = await readFileAsArray("./input.txt");
+  const array = await readFileAsArray(`${__dirname}/input.txt`);
 
   const dataArray = array.map((str) => Number(str));
 

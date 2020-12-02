@@ -1,4 +1,5 @@
 const fs = require("fs");
+const readline = require("readline");
 const util = require("util");
 
 const readFile = (filePath) => util.promisify(fs.readFile)(filePath, "utf8");
@@ -10,6 +11,10 @@ const file = {
 
     return data.replace(/\n$/, "").split("\n");
   },
+  lineReaderConstructor: (filePath) =>
+    readline.createInterface({
+      input: fs.createReadStream(filePath),
+    }),
 };
 
 module.exports = file;
