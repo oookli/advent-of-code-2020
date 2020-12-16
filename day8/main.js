@@ -18,9 +18,9 @@ const calculateInstructions = (commands) => {
     },
   };
 
-  while (true) {
+  while (cursor < commands.length) {
     if (cursorsHistory.has(cursor)) {
-      return result;
+      throw new Error("Infinite loop is possible here");
     }
 
     const { command, digit } = commands[cursor];
@@ -29,6 +29,8 @@ const calculateInstructions = (commands) => {
 
     commandsMapping[command](digit);
   }
+
+  return result;
 };
 
 const generateResult = async () => {
@@ -43,7 +45,24 @@ const generateResult = async () => {
   });
 
   lineReader.on("close", () => {
-    console.log("Result is: ", calculateInstructions(commands));
+    const result = () => {
+      for (let i = 0; i < commands.length; i++) {
+        const { command } = commands[i];
+
+        if (command !== "jmp") {
+          continue;
+        }
+
+        commands[i].command = "nop";
+
+        try {
+          return calculateInstructions(commands);
+        } catch (e) {
+          commands[i].command = "jmp";
+        }
+      }
+    };
+    console.log("Result is: ", result());
   });
 };
 
